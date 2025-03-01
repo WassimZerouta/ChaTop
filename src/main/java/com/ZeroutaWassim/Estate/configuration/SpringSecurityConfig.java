@@ -31,24 +31,22 @@ public class SpringSecurityConfig {
 	@Autowired
 	private CustomUserDetailsService customUserDetailsService;
 
-    @Bean
+
 	    
 	// Configures security filters
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        System.out.println("Security configuration applied!");
-
-        return http.csrf(csrf -> csrf.disable())
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeRequests(auth -> auth
-                        .antMatchers("/api/auth/register", "/api/auth/login", "/v3/api-docs/**", "/uploads/**")
-                        .permitAll()
-                        .anyRequest()
-                        .authenticated())
-                .httpBasic()
-                .and()
-                .oauth2ResourceServer(oauth2 -> oauth2.jwt())
-                .build();
-    }
+	@Bean
+	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+		return http
+			.csrf(csrf -> csrf.disable())
+			.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+			.authorizeRequests(auth -> auth
+					.antMatchers("/api/auth/register", "/api/auth/login", "/v3/api-docs/**", "/swagger-ui/**", "/uploads/**")
+					.permitAll()
+					.anyRequest()
+					.authenticated())
+			.oauth2ResourceServer(oauth2 -> oauth2.jwt())
+			.build();
+	}
 
 
 	@Bean
